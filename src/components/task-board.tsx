@@ -16,10 +16,9 @@ const BoardSection = ({
         padding: 2,
         borderRadius: 2,
         backgroundColor: 'background.paper',
-
       }}
     >
-      <Typography variant="h4" marginBottom={2}>{sectionName}</Typography>
+      <Typography variant="h4" marginBottom={2}>{sectionName}{tasks.length > 0 && ` (${tasks.length})`}</Typography>
       <TaskList tasks={tasks} />
     </Paper>
   )

@@ -1,27 +1,51 @@
 import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
 
 const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class'
   },
   colorSchemes: {
-    dark: true,
-    light: true,
-  },
-  palette: {
-    primary: {
-      main: '#556cd6',
+    dark: {
+      palette: {
+        primary: {
+          main: '#3A7CFD',
+        },
+        secondary: {
+          main: '#8796A5',
+        },
+        background: {
+          default: '#171823',
+          paper: '#25273D',
+        },
+        text: {
+          primary: '#C8CBE7',
+          secondary: '#5B5E7E',
+          disabled: '#4D5067',
+        },
+      },
     },
-    secondary: {
-      main: '#19857b',
-    },
-    error: {
-      main: red.A400,
+    light: {
+      palette: {
+        background: {
+          default: '#FAFAFA',
+          paper: '#ffffff',
+        },
+        text: {
+          primary: '#494C6B',
+          secondary: '#9495A5',
+          disabled: '#D1D2DA',
+        },
+        primary: {
+          main: '#3A7CFD',
+        },
+        secondary: {
+          main: '#aab4be',
+        },
+      },
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Josefin Sans", "Arial", sans-serif',
     h1: {
       fontSize: '2.5rem',
       fontWeight: 600,
@@ -42,7 +66,7 @@ const theme = createTheme({
     },
     h4: {
       fontSize: '1.25rem',
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.4,
       letterSpacing: '0em',
     },
