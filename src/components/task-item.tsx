@@ -32,6 +32,7 @@ export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
       id,
     }));
   }
+
   return (
     <div>
       {

@@ -1,4 +1,4 @@
-import { Button, FormControl, Input } from "@mui/material"
+import { Button, Input, Paper } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux";
 import { create } from "../store/slices/task-slice";
@@ -56,11 +56,29 @@ export const TaskCreator = () => {
     }
   }, [])
   return (
-    <form onSubmit={handleSubmit}>
-      <FormControl>
-        <Input id="my-input" aria-describedby="my-helper-text" name="task" placeholder={placeholder} value={formState.task} onChange={handleChange} />
-      </FormControl>
-      <Button type="submit">Add Task</Button>
-    </form>
+    <Paper elevation={2} sx={{
+      padding: 2,
+      borderRadius: 2,
+      backgroundColor: 'background.paper',
+    }}>
+      <form onSubmit={handleSubmit} style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+        <Input
+          name="task"
+          type="text"
+          placeholder={placeholder}
+          value={formState.task}
+          onChange={handleChange}
+          sx={{
+            width: '85%',
+          }}
+        />
+        <Button type="submit" variant="contained" color="primary">Add</Button>
+      </form>
+    </Paper>
   )
 }
