@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { modify, remove, changeTaskStatus } from "../store/slices/task-slice";
 import { useDispatch } from "react-redux";
-import { Box, Checkbox, IconButton, Input, Paper, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Input, Paper, Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
+import { motion } from "framer-motion";
 export type TaskItemProps = {
   description: string
   completed: boolean
@@ -12,8 +13,9 @@ export type TaskItemProps = {
 
 export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const dispatch = useDispatch();
   const [taskDescription, setTaskDescription] = useState(description);
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const handleEditTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskDescription(e.target.value);
   }
@@ -28,11 +30,15 @@ export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
     dispatch(remove({
       id
     }));
+    setOpen(false);
   }
   const handleCompleteTask = () => {
     dispatch(changeTaskStatus({
       id,
     }));
+  }
+  const handleClose = () => {
+    setOpen(false);
   }
 
   return (
@@ -48,6 +54,18 @@ export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
         width: '100%',
         marginBottom: 2,
       }}
+      component={motion.div}
+      layout
+      layoutId={id}
+      exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        type: 'spring',
+        bounce: 0.2,
+        layout: { type: 'spring', bounce: 0.2 }
+      }}
+      key={id}
     >
       {
         isEditing ? <>
@@ -69,11 +87,29 @@ export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
             />
             <Typography onClick={() => setIsEditing(true)} variant="body1">{description}</Typography>
           </Box>
-          <IconButton onClick={handleDeleteTask}>
+          <IconButton onClick={() => setOpen(true)}>
             <DeleteIcon />
           </IconButton>
         </>
       }
+      <Dialog 
+        open={open} 
+        onClose={handleClose}
+      >
+        <Box
+        >
+          <DialogTitle>Delete Task</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this task?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleDeleteTask}>Delete</Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
     </Paper>
   )
 }

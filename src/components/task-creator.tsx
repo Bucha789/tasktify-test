@@ -1,8 +1,8 @@
-import { Button, Input, Paper } from "@mui/material"
+import { Button, Input, Paper, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux";
 import { create } from "../store/slices/task-slice";
-
+import { motion } from "framer-motion";
 
 export const taskSuggestions = [
   "🏃 Go for a morning run...",
@@ -27,12 +27,13 @@ const initialFormState: Task = {
 }
 
 export const TaskCreator = () => {
-  const [placeholder, setPlaceholder] = useState<string>(taskSuggestions[0]);
+  const [suggestion, setSuggestion] = useState<string>(taskSuggestions[0]);
   const interval = useRef<NodeJS.Timeout | null>(null);
   const [formState, setFormState] = useState<Task>(initialFormState);
   const dispatch = useDispatch();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!formState.task) return;
     dispatch(create({
       description: formState.task,
       completed: false
@@ -46,15 +47,16 @@ export const TaskCreator = () => {
     });
   }
   useEffect(() => {
+    if (formState.task) return;
     interval.current = setInterval(() => {
-      setPlaceholder(taskSuggestions[Math.floor(Math.random() * taskSuggestions.length)]);
-    }, 3000);
+      setSuggestion(taskSuggestions[Math.floor(Math.random() * taskSuggestions.length)]);
+    }, 2000);
     return () => {
       if (interval.current) {
         clearInterval(interval.current);
       }
     }
-  }, [])
+  }, [formState.task])
   return (
     <Paper elevation={2} sx={{
       padding: 2,
@@ -66,16 +68,45 @@ export const TaskCreator = () => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        position: 'relative',
       }}>
+        <div style={{
+          position: 'absolute',
+          width: '100%',
+          opacity: formState.task ? 0 : 1,
+        }}>
+          <Typography
+            component={motion.span}
+            key={suggestion}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ type: 'spring', bounce: 0 }}
+            sx={{
+              width: '100%',
+              opacity: formState.task ? 0 : 1,
+              color: 'text.secondary',
+            }}
+          >
+            {suggestion}
+          </Typography>
+        </div>
         <Input
           name="task"
           type="text"
-          placeholder={placeholder}
-          value={formState.task}
-          onChange={handleChange}
+          placeholder={'Type your task here...'}
+          inputProps={{
+            sx: {
+              '&::placeholder': {
+                opacity: 0,
+              },
+            },
+          }}
           sx={{
             width: '85%',
           }}
+          value={formState.task}
+          onChange={handleChange}
         />
         <Button type="submit" variant="contained" color="primary">Add</Button>
       </form>
