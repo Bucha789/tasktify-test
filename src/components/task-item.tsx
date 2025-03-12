@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { modify, remove, changeTaskStatus, TaskStatus } from "../store/slices/task-slice";
 import { useDispatch } from "react-redux";
-import { Box, Button, ButtonGroup, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Input, Paper, Typography } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
+import { Box, ClickAwayListener, Grow, IconButton, Input, MenuItem, MenuList, Paper, Popper, Typography } from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
 import { motion } from "framer-motion";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-
+import { CustomCheckbox } from "./checkbox";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 export type TaskItemProps = {
   description: string
   status: string
@@ -17,6 +16,7 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [taskDescription, setTaskDescription] = useState(description);
   const [open, setOpen] = useState(false);
+  const anchorRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const handleEditTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskDescription(e.target.value);
@@ -29,10 +29,12 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
     }));
   }
   const handleDeleteTask = () => {
-    dispatch(remove({
-      id
-    }));
     setOpen(false);
+    setTimeout(() => {
+      dispatch(remove({
+        id
+      }));
+    }, 200);
   }
   const handleCompleteTask = () => {
     dispatch(changeTaskStatus({
@@ -40,15 +42,28 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
       status: TaskStatus.COMPLETED
     }));
   }
-  const handleInProgressTask = () => {
-    dispatch(changeTaskStatus({
-      id,
-      status: TaskStatus.IN_PROGRESS
-    }));
-  }
   const handleClose = () => {
     setOpen(false);
   }
+  const handleMenuItemClick = (_event: React.MouseEvent<HTMLLIElement>, index: number) => {
+    switch (index) {
+      case 0:
+        setIsEditing(true);
+        break;
+      case 1:
+        handleDeleteTask();
+        break;
+      case 2:
+        handleCompleteTask();
+        break;
+    }
+  }
+
+  const options = [
+    'Edit',
+    'Delete',
+    'Complete'
+  ]
 
   return (
     <Paper
@@ -79,12 +94,12 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
       {
         isEditing ? <>
           <Input type="text" value={taskDescription} onChange={handleEditTask} sx={{ width: '100%' }} />
-          <IconButton onClick={handleSaveTask}>
-            <SaveIcon />
+          <IconButton onClick={handleSaveTask} color="secondary">
+            <CheckIcon />
           </IconButton>
         </> : <>
           <Box display="flex" alignItems="center" gap={1}>
-            <Checkbox
+            <CustomCheckbox
               checked={status === TaskStatus.COMPLETED}
               onChange={handleCompleteTask}
               sx={{
@@ -94,36 +109,49 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
                 },
               }}
             />
-            <Typography onClick={() => setIsEditing(true)} variant="body1">{description}</Typography>
+            <Typography onClick={() => setIsEditing(true)} variant="body1" sx={{ textDecoration: status === TaskStatus.COMPLETED ? 'line-through' : 'none', color: status === TaskStatus.COMPLETED ? 'text.disabled' : 'text.primary' }}>{description}</Typography>
           </Box>
-          <ButtonGroup>
-            <IconButton onClick={() => setOpen(true)}>
-              <DeleteIcon />
+          <div ref={anchorRef}>
+            <IconButton onClick={() => setOpen(true)} color="secondary">
+              <MoreVertIcon />
             </IconButton>
-            <IconButton onClick={handleInProgressTask}>
-              <PlayArrowIcon />
-            </IconButton>
-          </ButtonGroup>
+          </div>
+          <Popper
+            sx={{ zIndex: 1 }}
+            open={open}
+            role={undefined}
+            transition
+            disablePortal
+            anchorEl={anchorRef.current}
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin:
+                    placement === 'bottom' ? 'center top' : 'center bottom',
+                }}
+              >
+                <Paper>
+                  <ClickAwayListener onClickAway={handleClose}>
+                    <MenuList id="split-button-menu" autoFocusItem>
+                      {options.map((option, index) => (
+                        <MenuItem
+                          key={option}
+                          onClick={(event) => handleMenuItemClick(event, index)}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
         </>
       }
-      <Dialog 
-        open={open} 
-        onClose={handleClose}
-      >
-        <Box
-        >
-          <DialogTitle>Delete Task</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete this task?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleDeleteTask}>Delete</Button>
-          </DialogActions>
-        </Box>
-      </Dialog>
+
     </Paper>
   )
 }

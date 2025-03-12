@@ -1,4 +1,4 @@
-import { Box, IconButton, Input, Paper, Typography } from "@mui/material"
+import { IconButton, Input, Paper, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux";
 import { create, TaskStatus } from "../store/slices/task-slice";
@@ -6,16 +6,16 @@ import { motion } from "framer-motion";
 import AddIcon from '@mui/icons-material/Add';
 
 export const taskSuggestions = [
-  "🏃 Go for a morning run...",
-  "📚 Read a chapter of my favorite book...",
-  "🧹 Clean and organize my desk...",
-  "🥗 Prepare a healthy lunch...",
-  "💻 Complete the coding assignment...",
-  "🌱 Water the houseplants...",
-  "📝 Write in my journal...",
-  "🧘‍♀️ Do 15 minutes of meditation...",
-  "🛒 Get groceries for the week...",
-  "✉️ Respond to important emails.."
+  "Go for a morning run...",
+  "Read a chapter of my favorite book...",
+  "Clean and organize my desk...",
+  "Prepare a healthy lunch...",
+  "Complete the coding assignment...",
+  "Water the houseplants...",
+  "Write in my journal...",
+  "Do 15 minutes of meditation...",
+  "Get groceries for the week...",
+  "Respond to important emails.."
 ]
 export type Task = {
   task: string;
@@ -63,6 +63,26 @@ export const TaskCreator = () => {
       padding: 2,
       borderRadius: 2,
       backgroundColor: 'background.paper',
+      '&:before': {
+        content: '""',
+        position: 'absolute',
+        top: -1,
+        left: -1,
+        right: -1,
+        bottom: -1,
+        borderRadius: 'inherit',
+        padding: 0.5,
+        background: 'linear-gradient(130deg, #55DDFF 0%, #C058F3 100%)',
+        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+        WebkitMaskComposite: 'xor',
+        maskComposite: 'exclude',
+        opacity: 0,
+        transition: 'opacity 0.2s ease-in-out',
+      },
+      '&:focus-within:before': {
+        opacity: 1,
+      },
+      position: 'relative'
     }}>
       <form onSubmit={handleSubmit} style={{
         display: 'flex',
@@ -87,6 +107,7 @@ export const TaskCreator = () => {
               width: '100%',
               opacity: formState.task ? 0 : 1,
               color: 'text.secondary',
+              fontSize: '1.25rem',
             }}
           >
             {suggestion}
@@ -95,12 +116,14 @@ export const TaskCreator = () => {
         <Input
           name="task"
           type="text"
+          size="medium"
           placeholder={'Type your task here...'}
           inputProps={{
             sx: {
               '&::placeholder': {
                 opacity: 0,
               },
+              fontSize: '1.25rem',
             },
           }}
           sx={{
@@ -109,11 +132,9 @@ export const TaskCreator = () => {
           value={formState.task}
           onChange={handleChange}
         />
-        <Box>
-          <IconButton type="submit">
-            <AddIcon />
-          </IconButton>
-        </Box>
+        <IconButton type="submit" color="secondary">
+          <AddIcon fontSize="large" />
+        </IconButton>
       </form>
     </Paper>
   )

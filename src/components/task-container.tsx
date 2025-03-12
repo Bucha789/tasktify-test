@@ -19,10 +19,10 @@ export const TaskContainer = () => {
   const ListActions = () => {
     return (
       <ButtonGroup>
-        <IconButton onClick={() => setView('board')}>
+        <IconButton onClick={() => setView('board')} color="secondary">
           <FormatListBulletedIcon />
         </IconButton>
-        <IconButton onClick={() => setView('list')}>
+        <IconButton onClick={() => setView('list')} color="secondary">
           <ListIcon />
         </IconButton>
       </ButtonGroup>
@@ -31,26 +31,26 @@ export const TaskContainer = () => {
   const BoardActions = () => {
     return (
       <ButtonGroup>
-        <IconButton onClick={() => setView('board')}>
+        <IconButton onClick={() => setView('board')} color="secondary">
           <SortIcon />
         </IconButton>
-        <IconButton onClick={() => setView('list')}>
+        <IconButton onClick={() => setView('list')} color="secondary">
           <SortByAlphaIcon />
         </IconButton>
       </ButtonGroup>
     )
   }
   return (
-    <Box>
+    <Box marginBottom={4}>
       <Box display="flex" flexDirection="row" gap={2} justifyContent="space-between">
         <Container maxWidth="md">
-          <Box display="flex" flexDirection="row" gap={2} justifyContent="space-between">
+          <Box display="flex" flexDirection="row" gap={2} justifyContent="space-between" marginBottom={2}>
             {view === 'board' ? <BoardActions /> : <ListActions />}
             <ButtonGroup>
-              <IconButton onClick={() => setView('list')} sx={{ backgroundColor: view === 'list' ? 'primary.main' : 'transparent' }}>
+              <IconButton onClick={() => setView('list')} sx={{ color: view === 'list' ? 'primary.main' : 'secondary.main' }}>
                 <TableRowsIcon />
               </IconButton>
-              <IconButton onClick={() => setView('board')} sx={{ backgroundColor: view === 'board' ? 'primary.main' : 'transparent' }}>
+              <IconButton onClick={() => setView('board')} sx={{ color: view === 'board' ? 'primary.main' : 'secondary.main' }}>
                 <TableChartIcon />
               </IconButton>
             </ButtonGroup>
