@@ -22,7 +22,6 @@ const BoardSection = ({
     handleClearHighlights();
     const elements = getElements(`[data-column="${tasks[0].status}"]`);
     const { element } = getNearestElement(event, elements);
-    console.log(element)
     const task = JSON.parse(event.dataTransfer.getData('task'));
     dispatch(changeTaskStatus({
       id: task.id,

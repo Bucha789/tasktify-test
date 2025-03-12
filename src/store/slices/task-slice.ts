@@ -77,10 +77,11 @@ export const tasksSlice = createSlice({
         const newTask = { ...task, status: action.payload.status }
         const beforeTaskIndex = state.addedTasks.findIndex(task => task.id === action.payload.beforeId);
         const filteredTasks = state.addedTasks.filter(task => task.id !== action.payload.id);
+        const index = beforeTaskIndex + 1;
         state.addedTasks = [
-          ...filteredTasks.slice(0, beforeTaskIndex),
+          ...filteredTasks.slice(0, index),
           newTask,
-          ...filteredTasks.slice(beforeTaskIndex)
+          ...filteredTasks.slice(index)
         ]
       }
     }
