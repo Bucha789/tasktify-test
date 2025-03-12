@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { markAsCompleted, modify, remove } from "../store/slices/task-slice";
+import { modify, remove, changeTaskStatus } from "../store/slices/task-slice";
 import { useDispatch } from "react-redux";
-
+import { Box, Checkbox, IconButton, Input, Paper, Typography } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 export type TaskItemProps = {
   description: string
   completed: boolean
@@ -28,26 +30,50 @@ export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
     }));
   }
   const handleCompleteTask = () => {
-    dispatch(markAsCompleted({
+    dispatch(changeTaskStatus({
       id,
     }));
   }
+
   return (
-    <div>
+    <Paper
+      elevation={2}
+      sx={{
+        padding: 2,
+        borderRadius: 2,
+        backgroundColor: 'background.paper',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginBottom: 2,
+      }}
+    >
       {
-        isEditing ? (
-        <div>
-          <input type="text" value={taskDescription} onChange={handleEditTask} />
-          <button onClick={handleSaveTask}>Save</button>
-        </div>
-      ) : (
-        <div>
-          <input type="checkbox" checked={completed} onChange={handleCompleteTask} />
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={handleDeleteTask}>Delete</button>
-          <span>{description}</span>
-        </div>
-      )}
-    </div>
+        isEditing ? <>
+          <Input type="text" value={taskDescription} onChange={handleEditTask} sx={{ width: '100%' }} />
+          <IconButton onClick={handleSaveTask}>
+            <SaveIcon />
+          </IconButton>
+        </> : <>
+          <Box display="flex" alignItems="center" gap={1}>
+            <Checkbox
+              checked={completed}
+              onChange={handleCompleteTask}
+              sx={{
+                color: 'primary.main',
+                '&.Mui-checked': {
+                  color: 'primary.main',
+                },
+              }}
+            />
+            <Typography onClick={() => setIsEditing(true)} variant="body1">{description}</Typography>
+          </Box>
+          <IconButton onClick={handleDeleteTask}>
+            <DeleteIcon />
+          </IconButton>
+        </>
+      }
+    </Paper>
   )
 }
