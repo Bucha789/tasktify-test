@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { DragEvent, useRef, useState } from "react";
 import { modify, remove, changeTaskStatus, TaskStatus } from "../store/slices/task-slice";
 import { useDispatch } from "react-redux";
 import { Box, ClickAwayListener, Grow, IconButton, Input, MenuItem, MenuList, Paper, Popper, Typography } from "@mui/material";
@@ -59,6 +59,16 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
     }
   }
 
+  const handleDragStart = (event: DragEvent<HTMLDivElement>) => {
+    if (event?.dataTransfer) {
+      event.dataTransfer?.setData('task', JSON.stringify({
+        id,
+        description,
+        status
+      }));
+    }
+  }
+
   const options = [
     'Edit',
     'Delete',
@@ -77,8 +87,11 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
         justifyContent: 'space-between',
         width: '100%',
         marginBottom: 2,
+        cursor: 'grab',
       }}
+      draggable
       component={motion.div}
+      onDragStart={(event) => handleDragStart(event as unknown as DragEvent<HTMLDivElement>)}
       layout
       layoutId={id}
       exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
@@ -109,7 +122,7 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
                 },
               }}
             />
-            <Typography onClick={() => setIsEditing(true)} variant="body1" sx={{ textDecoration: status === TaskStatus.COMPLETED ? 'line-through' : 'none', color: status === TaskStatus.COMPLETED ? 'text.disabled' : 'text.primary' }}>{description}</Typography>
+            <Typography onClick={() => setIsEditing(true)} variant="body1" sx={{ textDecoration: status === TaskStatus.COMPLETED ? 'line-through' : 'none', color: status === TaskStatus.COMPLETED ? 'text.disabled' : 'text.primary', cursor: 'pointer' }}>{description}</Typography>
           </Box>
           <div ref={anchorRef}>
             <IconButton onClick={() => setOpen(true)} color="secondary">
