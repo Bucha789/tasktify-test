@@ -5,7 +5,7 @@ import { TaskStatus } from "../store/slices/task-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getElements, getNearestElement } from "../utils/dom";
-
+import { AddTask } from "./add-task";
 const BoardSection = ({
   sectionName,
   tasks,
@@ -58,8 +58,8 @@ const BoardSection = ({
   return (
     <Paper
       sx={{
-        width: '33%',
         padding: 2,
+        width: '33%',
         borderRadius: 2,
         backgroundColor: 'background.paper',
         border: '2px solid',
@@ -71,6 +71,7 @@ const BoardSection = ({
     >
       <Typography variant="h4" marginBottom={2}>{sectionName}{tasks.length > 0 && ` (${tasks.length})`}</Typography>
       <TaskList tasks={tasks} />
+      <AddTask status={tasks[0].status as TaskStatus} />
     </Paper>
   )
 }
@@ -95,7 +96,7 @@ export const TaskBoard = ({ tasks }: TaskBoardProps) => {
     },
   ]
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ padding: 0 }}>
       <Box display="flex" flexDirection="row" gap={2} justifyContent="space-between">
         {sections.map((section) => (
           <BoardSection key={section.sectionName} {...section} />

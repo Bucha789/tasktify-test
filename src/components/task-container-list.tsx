@@ -5,6 +5,7 @@ import { TaskList } from "./task-list";
 import { getNearestElement } from "../utils/dom";
 import { useDispatch } from "react-redux";
 import { getElements } from "../utils/dom";
+import { AddTask } from "./add-task";
 
 
 const taskLabels = {
@@ -66,6 +67,7 @@ const ListSection = ({
     >
       <Typography variant="h6" marginBottom={2}>{taskLabels[status as TaskStatus]} {tasks.length > 0 && ` (${tasks.length})`}</Typography>
       <TaskList tasks={tasks} />
+      <AddTask status={status} />
     </Box>
   )
 }

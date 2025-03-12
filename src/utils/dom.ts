@@ -28,3 +28,10 @@ export const getNearestElement = <T extends DragEvent>(element: T, elements: HTM
   );
   return el;
 }
+
+export const isMouseOnCorners = (event: MouseEvent | DragEvent) => {
+  const THRESHOLD = 100;
+  const { clientX, clientY } = event;
+  const { innerWidth, innerHeight } = window;
+  return clientX < THRESHOLD || clientX > innerWidth - THRESHOLD || clientY < THRESHOLD || clientY > innerHeight - THRESHOLD;
+}

@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import { CustomCheckbox } from "./checkbox";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { DropIndicator } from "./drop-indicator";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 export type TaskItemProps = {
   description: string
   status: string
@@ -22,7 +24,8 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
   const handleEditTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskDescription(e.target.value);
   }
-  const handleSaveTask = () => {
+  const handleSaveTask = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsEditing(false);
     dispatch(modify({
       id,
@@ -50,6 +53,7 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
     switch (index) {
       case 0:
         setIsEditing(true);
+        setOpen(false);
         break;
       case 1:
         handleDeleteTask();
@@ -71,9 +75,21 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
   }
 
   const options = [
-    'Edit',
-    'Delete',
-    'Complete'
+    {
+      label: 'Edit',
+      icon: <EditIcon />,
+      color: 'primary.main'
+    },
+    {
+      label: 'Delete',
+      icon: <DeleteIcon />,
+      color: 'error.main'
+    },
+    {
+      label: 'Complete',
+      icon: <CheckIcon />,
+      color: 'text.primary'
+    }
   ]
 
   return (
@@ -106,12 +122,12 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
       key={id}
     >
       {
-        isEditing ? <>
-          <Input type="text" value={taskDescription} onChange={handleEditTask} sx={{ width: '100%' }} />
-          <IconButton onClick={handleSaveTask} color="secondary">
+        isEditing ? <form onSubmit={handleSaveTask} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Input type="text" value={taskDescription} autoFocus onChange={handleEditTask} sx={{ width: '100%' }} />
+          <IconButton type="submit" color="secondary">
             <CheckIcon />
           </IconButton>
-        </> : <>
+        </form> : <>
           <Box display="flex" alignItems="center" gap={1}>
             <CustomCheckbox
               checked={status === TaskStatus.COMPLETED}
@@ -151,10 +167,17 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
                     <MenuList id="split-button-menu" autoFocusItem>
                       {options.map((option, index) => (
                         <MenuItem
-                          key={option}
+                          key={option.label}
                           onClick={(event) => handleMenuItemClick(event, index)}
+                          sx={{
+                            color: option.color,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1
+                          }}
                         >
-                          {option}
+                          {option.icon}
+                          {option.label}
                         </MenuItem>
                       ))}
                     </MenuList>
