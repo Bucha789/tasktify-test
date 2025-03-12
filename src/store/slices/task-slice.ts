@@ -1,21 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
+import { tasks } from '../../db/tasks'
 
+export enum TaskStatus {
+  TODO = 'todo',
+  IN_PROGRESS = 'in-progress',
+  COMPLETED = 'completed'
+}
 
-export type TaskType = 'short' | 'medium' | 'long' | 'custom'
 export type Task = {
   id: string
   description: string
   createdAt: string
   completedAt?: string
-  completed: boolean
+  status: string
 }
 
 export type CurrentTask = Task & {
   currentDuration: number
 }
-export type TaskInput = Pick<Task, 'description' | 'completed'>
+export type TaskInput = Pick<Task, 'description' | 'status'>
 export type TaskId = Pick<Task, 'id'>
 export type TaskModify = Pick<Task, 'id' | 'description'>
 
@@ -27,17 +32,17 @@ export type TasksState = {
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
-    addedTasks: [] as Task[],
+    addedTasks: tasks,
   },
   reducers: {
     create: (state, action: PayloadAction<TaskInput>) => {
-      const { description, completed } = action.payload;
+      const { description, status } = action.payload;
       const id = uuidv4();
       state.addedTasks.push({
         createdAt: new Date().toISOString(),
         description,
-        completed,
         id,
+        status,
       })
     },
     modify: (state, action: PayloadAction<TaskModify>) => {
@@ -55,30 +60,21 @@ export const tasksSlice = createSlice({
     remove: (state, action: PayloadAction<TaskId>) => {
       state.addedTasks = state.addedTasks.filter(item => item.id !== action.payload.id)
     },
-    markAsCompleted: (state, action: PayloadAction<TaskId>) => {
+    changeTaskStatus: (state, action: PayloadAction<{
+      id: string
+      status: TaskStatus
+    }>) => {
       state.addedTasks = state.addedTasks.map((task) => {
         if (task && task.id === action.payload.id) {
-          return {
-            ...task,
-            completed: true,
-            completedAt: new Date().toISOString(),
-          }
-        }
-        return task
-      })
-    },
-    changeTaskStatus: (state, action: PayloadAction<TaskId>) => {
-      state.addedTasks = state.addedTasks.map((task) => {
-        if (task && task.id === action.payload.id) {
-          return { ...task, completed: !task.completed }
+          return { ...task, status: action.payload.status }
         }
         return task
       })
     }
-  },
+  }
 })
 
-export const { create, markAsCompleted, modify, remove, changeTaskStatus } = tasksSlice.actions
+export const { create, modify, remove, changeTaskStatus } = tasksSlice.actions
 
 
 export default tasksSlice.reducer

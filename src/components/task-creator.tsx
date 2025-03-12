@@ -1,8 +1,9 @@
-import { Button, Input, Paper, Typography } from "@mui/material"
+import { Box, IconButton, Input, Paper, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux";
-import { create } from "../store/slices/task-slice";
+import { create, TaskStatus } from "../store/slices/task-slice";
 import { motion } from "framer-motion";
+import AddIcon from '@mui/icons-material/Add';
 
 export const taskSuggestions = [
   "🏃 Go for a morning run...",
@@ -18,12 +19,12 @@ export const taskSuggestions = [
 ]
 export type Task = {
   task: string;
-  completed: boolean;
+  status: TaskStatus;
 }
 
 const initialFormState: Task = {
   task: "",
-  completed: false
+  status: TaskStatus.TODO
 }
 
 export const TaskCreator = () => {
@@ -36,7 +37,7 @@ export const TaskCreator = () => {
     if (!formState.task) return;
     dispatch(create({
       description: formState.task,
-      completed: false
+      status: TaskStatus.TODO
     }));
     setFormState(initialFormState);
   }
@@ -108,7 +109,11 @@ export const TaskCreator = () => {
           value={formState.task}
           onChange={handleChange}
         />
-        <Button type="submit" variant="contained" color="primary">Add</Button>
+        <Box>
+          <IconButton type="submit">
+            <AddIcon />
+          </IconButton>
+        </Box>
       </form>
     </Paper>
   )

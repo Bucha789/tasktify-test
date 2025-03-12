@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { modify, remove, changeTaskStatus } from "../store/slices/task-slice";
+import { modify, remove, changeTaskStatus, TaskStatus } from "../store/slices/task-slice";
 import { useDispatch } from "react-redux";
-import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Input, Paper, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Input, Paper, Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import { motion } from "framer-motion";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+
 export type TaskItemProps = {
   description: string
-  completed: boolean
+  status: string
   id: string
 }
 
-export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
+export const TaskItem = ({ description, status, id }: TaskItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [taskDescription, setTaskDescription] = useState(description);
   const [open, setOpen] = useState(false);
@@ -35,6 +37,13 @@ export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
   const handleCompleteTask = () => {
     dispatch(changeTaskStatus({
       id,
+      status: TaskStatus.COMPLETED
+    }));
+  }
+  const handleInProgressTask = () => {
+    dispatch(changeTaskStatus({
+      id,
+      status: TaskStatus.IN_PROGRESS
     }));
   }
   const handleClose = () => {
@@ -76,7 +85,7 @@ export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
         </> : <>
           <Box display="flex" alignItems="center" gap={1}>
             <Checkbox
-              checked={completed}
+              checked={status === TaskStatus.COMPLETED}
               onChange={handleCompleteTask}
               sx={{
                 color: 'primary.main',
@@ -87,9 +96,14 @@ export const TaskItem = ({ description, completed, id }: TaskItemProps) => {
             />
             <Typography onClick={() => setIsEditing(true)} variant="body1">{description}</Typography>
           </Box>
-          <IconButton onClick={() => setOpen(true)}>
-            <DeleteIcon />
-          </IconButton>
+          <ButtonGroup>
+            <IconButton onClick={() => setOpen(true)}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={handleInProgressTask}>
+              <PlayArrowIcon />
+            </IconButton>
+          </ButtonGroup>
         </>
       }
       <Dialog 
