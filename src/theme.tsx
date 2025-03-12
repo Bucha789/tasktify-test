@@ -40,6 +40,12 @@ const theme = createTheme({
       lineHeight: 1.4,
       letterSpacing: '0em',
     },
+    h4: {
+      fontSize: '1.25rem',
+      fontWeight: 500,
+      lineHeight: 1.4,
+      letterSpacing: '0em',
+    },
     body1: {
       fontSize: '1rem',
       fontWeight: 400,
