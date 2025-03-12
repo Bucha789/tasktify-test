@@ -6,6 +6,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { motion } from "framer-motion";
 import { CustomCheckbox } from "./checkbox";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { DropIndicator } from "./drop-indicator";
 export type TaskItemProps = {
   description: string
   status: string
@@ -76,6 +77,7 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
   ]
 
   return (
+    <>
     <Paper
       elevation={2}
       sx={{
@@ -86,7 +88,6 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
-        marginBottom: 2,
         cursor: 'grab',
       }}
       draggable
@@ -164,7 +165,8 @@ export const TaskItem = ({ description, status, id }: TaskItemProps) => {
           </Popper>
         </>
       }
-
-    </Paper>
+      </Paper>
+      <DropIndicator beforeId={id} column={status} />
+    </>
   )
 }

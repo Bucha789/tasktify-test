@@ -63,13 +63,26 @@ export const tasksSlice = createSlice({
     changeTaskStatus: (state, action: PayloadAction<{
       id: string
       status: TaskStatus
+      beforeId?: string
     }>) => {
+      if (!action.payload.beforeId) {
       state.addedTasks = state.addedTasks.map((task) => {
         if (task && task.id === action.payload.id) {
           return { ...task, status: action.payload.status }
-        }
-        return task
-      })
+          }
+          return task
+        })
+      } else {
+        const task = state.addedTasks.find(task => task.id === action.payload.id) as Task;
+        const newTask = { ...task, status: action.payload.status }
+        const beforeTaskIndex = state.addedTasks.findIndex(task => task.id === action.payload.beforeId);
+        const filteredTasks = state.addedTasks.filter(task => task.id !== action.payload.id);
+        state.addedTasks = [
+          ...filteredTasks.slice(0, beforeTaskIndex),
+          newTask,
+          ...filteredTasks.slice(beforeTaskIndex)
+        ]
+      }
     }
   }
 })

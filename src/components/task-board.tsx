@@ -4,6 +4,7 @@ import { changeTaskStatus, Task } from "../store/slices/task-slice";
 import { TaskStatus } from "../store/slices/task-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { getElements, getNearestElement } from "../utils/dom";
 
 const BoardSection = ({
   sectionName,
@@ -18,20 +19,41 @@ const BoardSection = ({
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setActive(false);
+    handleClearHighlights();
+    const elements = getElements(`[data-column="${tasks[0].status}"]`);
+    const { element } = getNearestElement(event, elements);
+    console.log(element)
     const task = JSON.parse(event.dataTransfer.getData('task'));
     dispatch(changeTaskStatus({
       id: task.id,
-      status: tasks[0].status as TaskStatus
+      status: tasks[0].status as TaskStatus,
+      beforeId: element.dataset.before
     }));
   }
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setActive(true);
+    handleHighlightIndicator(event);
   }
 
   const handleDragLeave = () => {
     setActive(false);
+    handleClearHighlights();
+  }
+  const handleClearHighlights = (elements?: HTMLElement[]) => {
+    const indicators = elements || getElements(`[data-column="${tasks[0].status}"]`);
+    indicators.forEach((element) => {
+      element.style.opacity = "0";
+      element.style.height = "16px";
+    });
+  }
+  const handleHighlightIndicator = (e: React.DragEvent<HTMLDivElement>) => {
+    const elements = getElements(`[data-column="${tasks[0].status}"]`);
+    handleClearHighlights(elements);
+    const el = getNearestElement(e, elements);
+    el.element.style.opacity = "1";
+    el.element.style.height = "24px";
   }
 
   return (
