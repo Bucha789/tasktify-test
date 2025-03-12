@@ -9,6 +9,7 @@ export const AddTaskTextarea = ({ value, onChange }: AddTaskTextareaProps) => {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Add new task..."
+      autoFocus
       style={{
         width: '100%',
         borderRadius: 'calc(2 * var(--mui-shape-borderRadius))',
