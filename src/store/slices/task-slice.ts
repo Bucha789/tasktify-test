@@ -67,10 +67,18 @@ export const tasksSlice = createSlice({
         return task
       })
     },
+    changeTaskStatus: (state, action: PayloadAction<TaskId>) => {
+      state.addedTasks = state.addedTasks.map((task) => {
+        if (task && task.id === action.payload.id) {
+          return { ...task, completed: !task.completed }
+        }
+        return task
+      })
+    }
   },
 })
 
-export const { create, markAsCompleted, modify, remove } = tasksSlice.actions
+export const { create, markAsCompleted, modify, remove, changeTaskStatus } = tasksSlice.actions
 
 
 export default tasksSlice.reducer
