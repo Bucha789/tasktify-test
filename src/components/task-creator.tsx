@@ -47,11 +47,14 @@ export const TaskCreator = () => {
     }
   }, [formState.task])
   return (
-    <Paper elevation={2} sx={{
-      padding: 2,
-      borderRadius: 2,
-      backgroundColor: 'background.paper',
-      '&:before': {
+    <Paper
+      elevation={2}
+      data-testid="task-creator"
+      sx={{
+        padding: 2,
+        borderRadius: 2,
+        backgroundColor: 'background.paper',
+        '&:before': {
         content: '""',
         position: 'absolute',
         top: -1,
