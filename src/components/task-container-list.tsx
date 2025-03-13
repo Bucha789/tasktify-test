@@ -3,11 +3,10 @@ import { changeTaskStatus, Task, TaskStatus } from "../store/slices/task-slice";
 import { groupTasksByStatus } from "../utils/group";
 import { TaskList } from "./task-list";
 import { getNearestElement } from "../utils/dom";
-import { useDispatch } from "react-redux";
 import { getElements } from "../utils/dom";
 import { AddTask } from "./add-task";
 import { taskLabels } from "../db/tasks";
-
+import { useAppDispatch } from "../store/hooks";
 const statusOrder = [TaskStatus.TODO, TaskStatus.IN_PROGRESS, TaskStatus.COMPLETED]
 
 
@@ -18,7 +17,7 @@ const ListSection = ({
   status: TaskStatus
   tasks: Task[]
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     handleClearHighlights();

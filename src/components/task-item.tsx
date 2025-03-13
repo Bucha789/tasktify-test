@@ -1,6 +1,5 @@
 import { DragEvent, useRef, useState } from "react";
 import { modify, remove, changeTaskStatus, TaskStatus } from "../store/slices/task-slice";
-import { useDispatch } from "react-redux";
 import { Box, ClickAwayListener, Grow, IconButton, Input, MenuItem, MenuList, Paper, Popper, Typography } from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
 import { motion } from "framer-motion";
@@ -12,6 +11,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useAppDispatch } from "../store/hooks";
+
 export type TaskItemProps = {
   description: string
   status: string
@@ -24,7 +25,7 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
   const [taskDescription, setTaskDescription] = useState(description);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleEditTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskDescription(e.target.value);
   }

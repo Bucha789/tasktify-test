@@ -3,11 +3,10 @@ import { TaskList } from "./task-list"
 import { changeTaskStatus, Task } from "../store/slices/task-slice";
 import { TaskStatus } from "../store/slices/task-slice";
 import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
-import { useDispatch } from "react-redux";
 import { getElements, getNearestElement } from "../utils/dom";
 import { AddTask } from "./add-task";
 import { taskLabels } from "../db/tasks";
-
+import { useAppDispatch } from "../store/hooks";
 
 const BoardSection = ({
   sectionKey,
@@ -21,7 +20,7 @@ const BoardSection = ({
   setIsMoving: Dispatch<SetStateAction<boolean>>
 }) => {
   const [active, setActive] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();

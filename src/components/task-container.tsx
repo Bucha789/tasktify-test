@@ -2,7 +2,7 @@ import { Box, ButtonGroup, IconButton } from "@mui/material"
 import { TaskBoard } from "./task-board"
 import { useState } from "react";
 import { Container } from "@mui/material"
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../store/hooks";
 import { RootState } from "../store";
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import TableChartIcon from '@mui/icons-material/TableChart';
@@ -10,7 +10,7 @@ import { TaskContainerList } from "./task-container-list";
 
 export const TaskContainer = () => {
   const [view, setView] = useState<'board' | 'list'>('board');
-  const tasks = useSelector((state: RootState) => state.tasks.addedTasks)
+  const tasks = useAppSelector((state: RootState) => state.tasks.addedTasks)
 
   return (
     <Box marginBottom={4}>
