@@ -19,8 +19,8 @@ export const TaskContainer = () => {
         <Container maxWidth="md">
           <Box display="flex" flexDirection="row" gap={2} justifyContent="flex-end" marginBottom={2}>
             <ButtonGroup>
-              <TaskViewButton active={view === 'board'} onClick={() => setView('board')} icon={<TableChartIcon />} />
-              <TaskViewButton active={view === 'list'} onClick={() => setView('list')} icon={<TableRowsIcon />} />
+              <TaskViewButton active={view === 'board'} onClick={() => setView('board')} icon={<TableChartIcon />} ariaLabel="board view" />
+              <TaskViewButton active={view === 'list'} onClick={() => setView('list')} icon={<TableRowsIcon />} ariaLabel="list view" />
             </ButtonGroup>
           </Box>
         </Container>

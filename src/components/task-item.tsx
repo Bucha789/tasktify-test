@@ -184,10 +184,21 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
                   },
                 }}
               />
-              <Typography onClick={() => setIsEditing(true)} variant="body1" sx={{ textDecoration: status === TaskStatus.COMPLETED ? 'line-through' : 'none', color: status === TaskStatus.COMPLETED ? 'text.disabled' : 'text.primary', cursor: 'pointer' }}>{description}</Typography>
+              <Typography 
+                onClick={() => setIsEditing(true)} 
+                variant="body1" 
+                sx={{ 
+                  textDecoration: status === TaskStatus.COMPLETED ? 'line-through' : 'none', 
+                  color: status === TaskStatus.COMPLETED ? 'text.disabled' : 'text.primary', 
+                  cursor: 'pointer' 
+                }}
+                aria-label={description}
+              >
+                {description}
+              </Typography>
             </Box>
             <div ref={anchorRef}>
-              <IconButton onClick={() => setOpen(true)} color="secondary">
+              <IconButton onClick={() => setOpen(true)} color="secondary" aria-label="more options">
                 <MoreVertIcon />
               </IconButton>
             </div>

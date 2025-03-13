@@ -124,7 +124,7 @@ export const TaskCreator = () => {
           value={formState.task}
           onChange={handleChange}
         />
-        <IconButton type="submit" color="secondary">
+        <IconButton type="submit" color="secondary" aria-label="add task">
           <AddIcon fontSize="large" />
         </IconButton>
       </form>

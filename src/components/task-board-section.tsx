@@ -111,7 +111,7 @@ export const TaskBoardSection = ({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
     >
-      <Typography variant="h4" marginBottom={2}>{taskLabels[sectionKey]}{tasks.length > 0 && ` (${tasks.length})`}</Typography>
+      <Typography variant="h2" marginBottom={2}>{taskLabels[sectionKey]}{tasks.length > 0 && ` (${tasks.length})`}</Typography>
       <TaskList tasks={tasks} />
       <AddTask status={sectionKey} />
     </Paper>
