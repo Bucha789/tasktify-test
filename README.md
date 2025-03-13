@@ -1,54 +1,61 @@
-# React + TypeScript + Vite
+# Tasktify
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple task management app built with React, TypeScript, and Vite. The app is built with MUI and uses the Redux Toolkit for state management.
 
-Currently, two official plugins are available:
+Project is deployed on Netlify and can be accessed [here](https://xira-ai-frontend-test.netlify.app).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Responsive design**: Thanks to MUI, the app is responsive and works on all devices.
+- **Drag and drop tasks**: The app uses the native HTML5 drag and drop API to move tasks between columns.
+- **Redux Toolkit**: The app uses the Redux Toolkit for state management.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
+### [Redux Toolkit](https://redux-toolkit.js.org/)
+  This library was used to manage the state of the application, tasks and the timer.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### [MUI](https://mui.com/)
+  This library was used to create the UI of the application.
+
+### [Vite](https://vitejs.dev/)
+  This library was used to create the Vite project.
+
+
+## Prerequisites
+- Node.js
+- npm
+- Git
+
+## Installation
+
+1. Clone the repository
+
+```bash
+git clone git@github.com:Bucha789/xira-frontend-test.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install the dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+3. Start the development server
+
+```bash
+npm run dev
+```
+
+## Future Improvements
+- Add a backend to store the tasks
+- Add a login system
+- Add a dashboard
+- Add a settings page
+- Add a help page
+- Add a about page
+- Improve the UI/UX
+- Fix some bugs regarding the animations
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
