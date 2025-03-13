@@ -1,8 +1,42 @@
 import { createTheme } from '@mui/material/styles';
+import JosefinSansRegular from './assets/fonts/Josefin-Sans/JosefinSans-Regular.ttf';
+import JosefinSansMedium from './assets/fonts/Josefin-Sans/JosefinSans-Medium.ttf';
+import JosefinSansSemiBold from './assets/fonts/Josefin-Sans/JosefinSans-SemiBold.ttf';
+import JosefinSansBold from './assets/fonts/Josefin-Sans/JosefinSans-Bold.ttf';
 
 const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class'
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 400;
+          font-style: normal;
+          src: url(${JosefinSansRegular}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 500;
+          font-style: normal;
+          src: url(${JosefinSansMedium}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 600;
+          font-style: normal;
+          src: url(${JosefinSansSemiBold}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 700;
+          font-style: normal;
+          src: url(${JosefinSansBold}) format('truetype');
+        }
+      `
+    }
   },
   colorSchemes: {
     dark: {
@@ -53,19 +87,19 @@ const theme = createTheme({
       letterSpacing: '-0.01562em',
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: '1.25rem',
       fontWeight: 500,
       lineHeight: 1.3,
       letterSpacing: '-0.00833em',
     },
     h3: {
-      fontSize: '1.75rem',
+      fontSize: '1rem',
       fontWeight: 500,
       lineHeight: 1.4,
       letterSpacing: '0em',
     },
     h4: {
-      fontSize: '1.25rem',
+      fontSize: '1rem',
       fontWeight: 600,
       lineHeight: 1.4,
       letterSpacing: '0em',

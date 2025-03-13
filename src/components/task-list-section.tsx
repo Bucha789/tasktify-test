@@ -56,7 +56,7 @@ export const TaskListSection = ({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
     >
-      <Typography variant="h6" marginBottom={2}>{taskLabels[status as TaskStatus]} {tasks.length > 0 && ` (${tasks.length})`}</Typography>
+      <Typography variant="h2" marginBottom={2}>{taskLabels[status as TaskStatus]} {tasks.length > 0 && ` (${tasks.length})`}</Typography>
       <TaskList tasks={tasks} />
       <AddTask status={status} />
     </Box>

@@ -51,7 +51,7 @@ export const DeleteTaskContainer = ({
         border: '2px solid error.dark',
       }}
     >
-      <IconButton color='default'>
+      <IconButton color='default' aria-label="delete task">
         <DeleteIcon />
       </IconButton>
     </Box>
