@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid';
 import { tasks } from '../../db/tasks'
+import { getAllowedStatuses } from '../../utils/tasks';
 
 export enum TaskStatus {
   TODO = 'todo',
@@ -14,13 +15,14 @@ export type Task = {
   description: string
   createdAt: string
   completedAt?: string
-  status: string
+  status: TaskStatus
+  allowedStatuses?: TaskStatus[]
 }
 
 export type CurrentTask = Task & {
   currentDuration: number
 }
-export type TaskInput = Pick<Task, 'description' | 'status'>
+export type TaskInput = Pick<Task, 'description' | 'status' | 'allowedStatuses'>
 export type TaskId = Pick<Task, 'id'>
 export type TaskModify = Pick<Task, 'id' | 'description'>
 
@@ -32,18 +34,20 @@ export type TasksState = {
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
-    addedTasks: tasks,
+    addedTasks: tasks as Task[],
   },
   reducers: {
     create: (state, action: PayloadAction<TaskInput>) => {
       const { description, status } = action.payload;
       const id = uuidv4();
-      state.addedTasks.push({
+      const newTask: Task = {
         createdAt: new Date().toISOString(),
         description,
         id,
         status,
-      })
+        allowedStatuses: getAllowedStatuses(status) || []
+      };
+      state.addedTasks.push(newTask);
     },
     modify: (state, action: PayloadAction<TaskModify>) => {
       const { id, description } = action.payload;
@@ -68,13 +72,13 @@ export const tasksSlice = createSlice({
       if (!action.payload.beforeId) {
       state.addedTasks = state.addedTasks.map((task) => {
         if (task && task.id === action.payload.id) {
-          return { ...task, status: action.payload.status }
+          return { ...task, status: action.payload.status, allowedStatuses: getAllowedStatuses(action.payload.status) }
           }
           return task
         })
       } else {
         const task = state.addedTasks.find(task => task.id === action.payload.id) as Task;
-        const newTask = { ...task, status: action.payload.status }
+        const newTask = { ...task, status: action.payload.status, allowedStatuses: getAllowedStatuses(action.payload.status) }
         const beforeTaskIndex = state.addedTasks.findIndex(task => task.id === action.payload.beforeId);
         const filteredTasks = state.addedTasks.filter(task => task.id !== action.payload.id);
         const index = beforeTaskIndex + 1;
