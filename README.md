@@ -4,6 +4,63 @@ A simple task management app built with React, TypeScript, and Vite. The app is 
 
 Project is deployed on Netlify and can be accessed [here](https://xira-ai-frontend-test.netlify.app).
 
+
+## Prerequisites
+- Node.js
+- npm
+- Git
+
+## Installation
+
+1. Clone the repository
+
+```bash
+git clone git@github.com:Bucha789/xira-frontend-test.git
+```
+
+2. Install the dependencies
+
+```bash
+npm install
+```
+
+3. Start the development server
+
+```bash
+npm run dev
+```
+
+## Testing
+
+The app has unit tests for the task slice.
+
+```bash
+npm run test
+```
+
+
+## Project Structure
+```bash
+├── __tests__
+│   ├── pages
+│   └── store
+│       └── slices
+├── components
+├── db
+├── pages
+├── store
+│   ├── hooks
+│   └── slices
+└── utils
+```
+- `__tests__`: The unit tests for the application.
+- `components`: The components for the application. I use some kind of flatten structure for the components.
+- `db`: We have the dummy tasks here and some readonly values.
+- `pages`: This folder contains the pages for the application. Currently, we have only the home page but thinking in the scalability of the app, I created this folder.
+- `store`: The store for the application Redux Toolkit is used to manage the state of the application.
+- `utils`: The utils for the application. Functions that are used as helpers in the components are stored here. Like sort functions, etc.
+
+
 ## Features
 
 - **Responsive design**: Thanks to MUI, the app is responsive and works on all devices.
@@ -76,39 +133,6 @@ These are the modes available:
 ### [Vitest](https://vitest.dev/)
   This library was used to create the tests for the application.
 
-
-## Prerequisites
-- Node.js
-- npm
-- Git
-
-## Installation
-
-1. Clone the repository
-
-```bash
-git clone git@github.com:Bucha789/xira-frontend-test.git
-```
-
-2. Install the dependencies
-
-```bash
-npm install
-```
-
-3. Start the development server
-
-```bash
-npm run dev
-```
-
-## Testing
-
-The app has unit tests for the task slice.
-
-```bash
-npm run test
-```
 
 ## Future Improvements
 - Add a backend to store the tasks
