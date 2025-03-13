@@ -11,3 +11,4 @@ export const getAllowedStatuses = (status: TaskStatus) => {
     return [TaskStatus.TODO, TaskStatus.IN_PROGRESS];
   }
 }
+export const statusOrder = ['todo', 'in-progress', 'completed']
