@@ -25,7 +25,7 @@ export const TaskCreator = () => {
     if (!formState.task) return;
     dispatch(create({
       description: formState.task,
-      status: TaskStatus.TODO
+      status: TaskStatus.TODO,
     }));
     setFormState(initialFormState);
   }

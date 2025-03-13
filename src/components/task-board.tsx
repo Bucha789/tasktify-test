@@ -6,13 +6,16 @@ import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 import { getElements, getNearestElement } from "../utils/dom";
 import { AddTask } from "./add-task";
+import { taskLabels } from "../db/tasks";
+
+
 const BoardSection = ({
-  sectionName,
+  sectionKey,
   tasks,
   isMoving,
   setIsMoving
 }: {
-  sectionName: string
+  sectionKey: TaskStatus
   tasks: Task[]
   isMoving: boolean
   setIsMoving: Dispatch<SetStateAction<boolean>>
@@ -29,8 +32,8 @@ const BoardSection = ({
     const task = JSON.parse(event.dataTransfer.getData('task'));
     dispatch(changeTaskStatus({
       id: task.id,
-      status: tasks[0].status as TaskStatus,
-      beforeId: element.dataset.before
+      status: sectionKey,
+      beforeId: element.dataset.before,
     }));
   }
 
@@ -112,9 +115,9 @@ const BoardSection = ({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
     >
-      <Typography variant="h4" marginBottom={2}>{sectionName}{tasks.length > 0 && ` (${tasks.length})`}</Typography>
+      <Typography variant="h4" marginBottom={2}>{taskLabels[sectionKey]}{tasks.length > 0 && ` (${tasks.length})`}</Typography>
       <TaskList tasks={tasks} />
-      <AddTask status={tasks[0].status as TaskStatus} />
+      <AddTask status={sectionKey} />
     </Paper>
   )
 }
@@ -127,15 +130,15 @@ export const TaskBoard = ({ tasks }: TaskBoardProps) => {
   const [isMoving, setIsMoving] = useState(false);
   const sections = [
     {
-      sectionName: 'To Do',
+      sectionKey: TaskStatus.TODO,
       tasks: tasks.filter((task) => task.status === TaskStatus.TODO),
     },
     {
-      sectionName: 'In Progress',
+      sectionKey: TaskStatus.IN_PROGRESS,
       tasks: tasks.filter((task) => task.status === TaskStatus.IN_PROGRESS),
     },
     {
-      sectionName: 'Completed',
+      sectionKey: TaskStatus.COMPLETED,
       tasks: tasks.filter((task) => task.status === TaskStatus.COMPLETED),
     },
   ]
@@ -161,7 +164,7 @@ export const TaskBoard = ({ tasks }: TaskBoardProps) => {
         }}
       >
         {sections.map((section) => (
-          <BoardSection key={section.sectionName} isMoving={isMoving} setIsMoving={setIsMoving} {...section} />
+          <BoardSection key={section.sectionKey} isMoving={isMoving} setIsMoving={setIsMoving} {...section} />
         ))}
       </Box>
     </Container>

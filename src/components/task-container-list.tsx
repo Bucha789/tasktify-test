@@ -6,13 +6,8 @@ import { getNearestElement } from "../utils/dom";
 import { useDispatch } from "react-redux";
 import { getElements } from "../utils/dom";
 import { AddTask } from "./add-task";
+import { taskLabels } from "../db/tasks";
 
-
-const taskLabels = {
-  [TaskStatus.TODO]: 'To Do',
-  [TaskStatus.IN_PROGRESS]: 'In Progress',
-  [TaskStatus.COMPLETED]: 'Completed',
-}
 const statusOrder = [TaskStatus.TODO, TaskStatus.IN_PROGRESS, TaskStatus.COMPLETED]
 
 
@@ -32,7 +27,7 @@ const ListSection = ({
     const task = JSON.parse(event.dataTransfer.getData('task'));
     dispatch(changeTaskStatus({
       id: task.id,
-      status: tasks[0].status as TaskStatus,
+      status: status as TaskStatus,
       beforeId: element.dataset.before
     }));
   }

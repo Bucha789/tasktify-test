@@ -38,7 +38,7 @@ export const DeleteTaskContainer = ({
         left: direction === 'left' ? 0 : 'auto',
         zIndex: 1000,
         width: '5%',
-        minHeight: '100vh',
+        minHeight: '100%',
         borderRadius: 1,
         padding: 1,
         boxShadow: 3,
