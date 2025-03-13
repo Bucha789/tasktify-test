@@ -5,7 +5,6 @@ import { Box, Container, Grid2, Typography, useColorScheme } from "@mui/material
 import { DeleteTaskContainer } from "../components/delete-task-container"
 export const HomePage = () => {
   const { mode } = useColorScheme();
-
   return (
     <Grid2
       sx={{
@@ -18,7 +17,17 @@ export const HomePage = () => {
       }}>
         <Container maxWidth="md">
           <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" width="100%" marginBottom={5}>
-            <Typography variant="h1" sx={{ textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 700, color: mode === 'dark' ? 'white' : 'black' }}>Tasktify</Typography>
+            <Typography 
+              variant="h1" 
+              sx={{ 
+                textTransform: 'uppercase',
+                letterSpacing: '0.2em',
+                fontWeight: 700,
+                color: mode === 'dark' ? 'white' : 'black' 
+              }}
+              >
+                Tasktify
+              </Typography>
             <DarkModeToggle />
           </Box>
           <TaskCreator />

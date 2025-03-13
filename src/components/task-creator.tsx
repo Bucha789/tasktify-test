@@ -99,7 +99,10 @@ export const TaskCreator = () => {
               width: '100%',
               opacity: formState.task ? 0 : 1,
               color: 'text.secondary',
-              fontSize: '1.25rem',
+              fontSize: {
+                xs: '1rem',
+                md: '1.25rem',
+              },
             }}
           >
             {suggestion}
@@ -115,7 +118,10 @@ export const TaskCreator = () => {
               '&::placeholder': {
                 opacity: 0,
               },
-              fontSize: '1.25rem',
+              fontSize: {
+                xs: '1rem',
+                md: '1.25rem',
+              },
             },
           }}
           sx={{

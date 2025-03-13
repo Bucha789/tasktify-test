@@ -10,7 +10,7 @@ import { TaskContainerList } from "./task-container-list";
 import { TaskViewButton } from "./task-view-button";
 
 export const TaskContainer = () => {
-  const [view, setView] = useState<'board' | 'list'>('board');
+  const [view, setView] = useState<'board' | 'list'>('list');
   const tasks = useAppSelector((state: RootState) => state.tasks.addedTasks)
 
   return (

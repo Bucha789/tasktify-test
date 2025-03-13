@@ -91,6 +91,8 @@ Animations are not perfect, but I tried to make them as smooth as possible. It w
 
 I'm not a designer, so I did my best to create a simple and clean design that is easy to use and navigate. I'm open to feedback and suggestions to improve the app. 
 
+It's true that I have worked in a similar app before, but I wanted to create a new one to show my skills and to have a fresh start. (You can find the repo [here](https://github.com/Bucha789/test-task-project)). That's why I didn't use the same design and I created a new one.
+
 
 For the app, I created two main views:
 - **Task board**: The app has a task board with three columns: To Do, In Progress and Done.

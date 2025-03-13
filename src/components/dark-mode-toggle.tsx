@@ -60,5 +60,6 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 export const DarkModeToggle = () => {
   const { mode, setMode } = useColorScheme();
+
   return <MaterialUISwitch checked={mode === 'dark'} onChange={() => setMode(mode === 'dark' ? 'light' : 'dark')} />
 } 

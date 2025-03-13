@@ -48,10 +48,14 @@ export const DeleteTaskContainer = ({
         justifyContent: 'center',
         opacity: isActive ? 0.5 : 0,
         transition: 'opacity 0.3s ease-in-out',
-        border: '2px solid error.dark',
       }}
     >
-      <IconButton color='default' aria-label="delete task">
+      <IconButton color='default' aria-label="delete task" sx={{
+        display: {
+          md: 'block',
+          xs: 'none',
+        },
+      }}>
         <DeleteIcon />
       </IconButton>
     </Box>
