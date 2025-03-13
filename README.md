@@ -45,6 +45,8 @@ npm run test
 │   ├── pages
 │   └── store
 │       └── slices
+├── assets
+│   └── fonts
 ├── components
 ├── db
 ├── pages
@@ -54,12 +56,19 @@ npm run test
 └── utils
 ```
 - `__tests__`: The unit tests for the application.
+- `assets`: The assets for the application. I used like this to have a better initial load of the app.
 - `components`: The components for the application. I use some kind of flatten structure for the components.
 - `db`: We have the dummy tasks here and some readonly values.
 - `pages`: This folder contains the pages for the application. Currently, we have only the home page but thinking in the scalability of the app, I created this folder.
 - `store`: The store for the application Redux Toolkit is used to manage the state of the application.
 - `utils`: The utils for the application. Functions that are used as helpers in the components are stored here. Like sort functions, etc.
 
+
+## Lighthouse Results (Tested on the deployed app)
+### Desktop
+![Lighthouse Results Desktop](docs/images/lighthouse/desktop.png)
+### Mobile
+![Lighthouse Results Mobile](docs/images/lighthouse/mobile.png)
 
 ## Features
 
