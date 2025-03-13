@@ -1,5 +1,5 @@
 import { DragEvent, useRef, useState } from "react";
-import { modify, remove, changeTaskStatus, TaskStatus } from "../store/slices/task-slice";
+import { modify, remove, changeStatus, TaskStatus } from "../store/slices/task-slice";
 import { Box, IconButton, Paper, Typography } from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
 import { motion } from "framer-motion";
@@ -32,8 +32,10 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
     setIsEditing(false);
     dispatch(modify({
       id,
-      description
+      description,
+      status: status as TaskStatus
     }));
+    setOpen(false); 
   }
   const handleDeleteTask = () => {
     setOpen(false);
@@ -41,16 +43,16 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
       dispatch(remove({
         id
       }));
-    }, 200);
+    }, 300);
   }
   const handleCompleteTask = () => {
     if (status === TaskStatus.COMPLETED) {
-      dispatch(changeTaskStatus({
+      dispatch(changeStatus({
         id,
         status: TaskStatus.TODO
       }));
     } else {
-      dispatch(changeTaskStatus({
+      dispatch(changeStatus({
         id,
         status: TaskStatus.COMPLETED
       }));
@@ -101,7 +103,7 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
       color: 'text.primary',
       key: TaskStatus.IN_PROGRESS,
       onClick: () => {
-        dispatch(changeTaskStatus({
+        dispatch(changeStatus({
           id,
           status: TaskStatus.IN_PROGRESS
         }));
@@ -113,7 +115,7 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
       color: 'text.primary',
       key: TaskStatus.TODO,
       onClick: () => {
-        dispatch(changeTaskStatus({
+        dispatch(changeStatus({
           id,
           status: TaskStatus.TODO
         }));
@@ -125,7 +127,7 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
       color: 'text.primary',
       key: TaskStatus.COMPLETED,
       onClick: () => {
-        dispatch(changeTaskStatus({
+        dispatch(changeStatus({
           id,
           status: TaskStatus.COMPLETED
         }));

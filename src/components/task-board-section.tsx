@@ -1,6 +1,6 @@
 import { Paper, Typography } from "@mui/material"
 import { TaskList } from "./task-list"
-import { changeTaskStatus, Task, TaskStatus } from "../store/slices/task-slice";
+import { changeStatus, Task, TaskStatus } from "../store/slices/task-slice";
 import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { getElements, getNearestElement } from "../utils/dom";
 import { AddTask } from "./add-task";
@@ -28,7 +28,7 @@ export const TaskBoardSection = ({
     const elements = getElements(`[data-column="${tasks[0].status}"]`);
     const { element } = getNearestElement(event, elements);
     const task = JSON.parse(event.dataTransfer.getData('task'));
-    dispatch(changeTaskStatus({
+    dispatch(changeStatus({
       id: task.id,
       status: sectionKey,
       beforeId: element.dataset.before,

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { changeTaskStatus, Task, TaskStatus } from "../store/slices/task-slice";
+import { changeStatus, Task, TaskStatus } from "../store/slices/task-slice";
 import { TaskList } from "./task-list";
 import { getNearestElement } from "../utils/dom";
 import { getElements } from "../utils/dom";
@@ -21,7 +21,7 @@ export const TaskListSection = ({
     const elements = getElements(`[data-column="${tasks[0].status}"]`);
     const { element } = getNearestElement(event, elements);
     const task = JSON.parse(event.dataTransfer.getData('task'));
-    dispatch(changeTaskStatus({
+    dispatch(changeStatus({
       id: task.id,
       status: status as TaskStatus,
       beforeId: element.dataset.before

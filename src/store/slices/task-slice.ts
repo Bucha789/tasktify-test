@@ -23,7 +23,7 @@ export type CurrentTask = Task & {
 }
 export type TaskInput = Pick<Task, 'description' | 'status' | 'allowedStatuses'>
 export type TaskId = Pick<Task, 'id'>
-export type TaskModify = Pick<Task, 'id' | 'description'>
+export type TaskModify = Pick<Task, 'id' | 'description' | 'status'>
 
 export type TasksState = {
   addedTasks: Task[]
@@ -63,7 +63,7 @@ export const tasksSlice = createSlice({
     remove: (state, action: PayloadAction<TaskId>) => {
       state.addedTasks = state.addedTasks.filter(item => item.id !== action.payload.id)
     },
-    changeTaskStatus: (state, action: PayloadAction<{
+    changeStatus: (state, action: PayloadAction<{
       id: string
       status: TaskStatus
       beforeId?: string
@@ -91,7 +91,7 @@ export const tasksSlice = createSlice({
   }
 })
 
-export const { create, modify, remove, changeTaskStatus } = tasksSlice.actions
+export const { create, modify, remove, changeStatus } = tasksSlice.actions
 
 
 export default tasksSlice.reducer
