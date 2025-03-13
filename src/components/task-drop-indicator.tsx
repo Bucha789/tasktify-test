@@ -1,7 +1,7 @@
 import { Divider } from "@mui/material"
 
 
-export const DropIndicator = ({ beforeId, column }: { beforeId: string, column: string }) => {
+export const TaskDropIndicator = ({ beforeId, column }: { beforeId: string, column: string }) => {
   return (
     <Divider 
       data-before={beforeId || "-1"} 

@@ -1,15 +1,10 @@
-export type AddTaskTextareaProps = {
-  value: string
-  onChange: (value: string) => void
-}
+import { InputHTMLAttributes } from "react"
 
-export const AddTaskTextarea = ({ value, onChange }: AddTaskTextareaProps) => {
+export type AddTaskTextareaProps = InputHTMLAttributes<HTMLTextAreaElement>
+
+export const AddTaskTextarea = (props: AddTaskTextareaProps) => {
   return (
     <textarea
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder="Add new task..."
-      autoFocus
       style={{
         width: '100%',
         borderRadius: 'calc(2 * var(--mui-shape-borderRadius))',
@@ -23,6 +18,7 @@ export const AddTaskTextarea = ({ value, onChange }: AddTaskTextareaProps) => {
         backgroundColor: 'transparent',
         color: 'common.white',
       }}
+      {...props}
     />
   )
 }

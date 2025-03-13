@@ -1,17 +1,20 @@
 import { DragEvent, useRef, useState } from "react";
 import { modify, remove, changeTaskStatus, TaskStatus } from "../store/slices/task-slice";
-import { useDispatch } from "react-redux";
-import { Box, ClickAwayListener, Grow, IconButton, Input, MenuItem, MenuList, Paper, Popper, Typography } from "@mui/material";
+import { Box, IconButton, Paper, Typography } from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
 import { motion } from "framer-motion";
 import { CustomCheckbox } from "./checkbox";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { DropIndicator } from "./drop-indicator";
+import { TaskDropIndicator } from "./task-drop-indicator";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useAppDispatch } from "../store/hooks";
+import { TaskItemOptions } from "./task-item-options";
+import { EditTaskForm } from "./edit-task-form";
+
 export type TaskItemProps = {
   description: string
   status: string
@@ -21,19 +24,15 @@ export type TaskItemProps = {
 
 export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [taskDescription, setTaskDescription] = useState(description);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
-  const handleEditTask = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskDescription(e.target.value);
-  }
-  const handleSaveTask = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const dispatch = useAppDispatch();
+
+  const handleSaveTask = (description: string) => {
     setIsEditing(false);
     dispatch(modify({
       id,
-      description: taskDescription
+      description
     }));
   }
   const handleDeleteTask = () => {
@@ -171,12 +170,7 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
         key={id}
       >
         {
-          isEditing ? <form onSubmit={handleSaveTask} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Input type="text" value={taskDescription} autoFocus onChange={handleEditTask} sx={{ width: '100%' }} />
-            <IconButton type="submit" color="secondary">
-              <CheckIcon />
-            </IconButton>
-          </form> : <>
+          isEditing ? <EditTaskForm initialState={{ description }} onSubmit={handleSaveTask} /> : <>
             <Box display="flex" alignItems="center" gap={1}>
               <CustomCheckbox
                 checked={status === TaskStatus.COMPLETED}
@@ -195,50 +189,16 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
                 <MoreVertIcon />
               </IconButton>
             </div>
-            <Popper
-              sx={{ zIndex: 1 }}
+            <TaskItemOptions
               open={open}
-              role={undefined}
-              transition
-              disablePortal
-              anchorEl={anchorRef.current}
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === 'bottom' ? 'center top' : 'center bottom',
-                  }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
-                      <MenuList id="split-button-menu" autoFocusItem>
-                        {[...filteredOptions, ...options].map((option) => (
-                          <MenuItem
-                            key={option.label}
-                            onClick={option.onClick}
-                            sx={{
-                              color: option.color,
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: 1
-                            }}
-                          >
-                            {option.icon}
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
+              ref={anchorRef}
+              onClose={handleClose}
+              options={[...filteredOptions, ...options]}
+            />
           </>
         }
       </Paper>
-      <DropIndicator beforeId={id} column={status} />
+      <TaskDropIndicator beforeId={id} column={status} />
     </>
   )
 }

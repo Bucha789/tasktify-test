@@ -1,10 +1,11 @@
 import { IconButton, Input, Paper, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
-import { useDispatch } from "react-redux";
 import { create, TaskStatus } from "../store/slices/task-slice";
 import { motion } from "framer-motion";
 import AddIcon from '@mui/icons-material/Add';
 import { taskSuggestions } from "../db/suggetions";
+import { useAppDispatch } from "../store/hooks";
+
 export type Task = {
   task: string;
   status: TaskStatus;
@@ -19,7 +20,7 @@ export const TaskCreator = () => {
   const [suggestion, setSuggestion] = useState<string>(taskSuggestions[0]);
   const interval = useRef<NodeJS.Timeout | null>(null);
   const [formState, setFormState] = useState<Task>(initialFormState);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formState.task) return;

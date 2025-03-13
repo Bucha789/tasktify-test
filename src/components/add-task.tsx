@@ -1,86 +1,33 @@
-import { FormEvent } from "react";
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { create, TaskStatus } from "../store/slices/task-slice";
-import { useDispatch } from "react-redux";
+import { Box } from "@mui/material";
+import { AddTaskForm } from "./add-task-form";
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Button } from "@mui/material";
-import { AddTaskTextarea } from "./add-task-textarea";
+import { useAppDispatch } from "../store/hooks";
 export type AddTaskProps = {
   status: TaskStatus
 }
 
 export const AddTask = ({ status }: AddTaskProps) => {
-  const [text, setText] = useState("");
   const [adding, setAdding] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!text.trim().length) return;
-
+  const handleSubmit = ({ description }: { description: string }) => {
+    if (!description.trim().length) return;
     dispatch(create({
-      description: text,
+      description,
       status
     }));
-
     setAdding(false);
   };
 
   return (
     <>
       {adding ? (
-        <motion.form layout onSubmit={handleSubmit}>
-          <Box
-            sx={{
-              width: '100%',
-              paddingX: 3,
-            }}
-          >
-            <AddTaskTextarea
-              value={text}
-              onChange={(value) => setText(value)}
-            />
-          </Box>
-          <Box
-            sx={{
-              paddingX: 3,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              gap: 1
-            }}
-          >
-            <Button
-              onClick={() => setAdding(false)}
-              variant="text"
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 1,
-                textTransform: 'none',
-                color: 'secondary.main',
-              }}
-            >
-              Close
-            </Button>
-            <Button
-              type="submit"
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textTransform: 'none',
-                gap: 1
-              }}
-            >
-              <span>Add</span>
-              <AddIcon fontSize="small" />
-            </Button>
-          </Box>
-        </motion.form>
+        <AddTaskForm
+          onSubmit={handleSubmit}
+          onClose={() => setAdding(false)}
+        />
       ) : (
         <Box
           sx={{

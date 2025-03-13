@@ -2,15 +2,15 @@ import { Box, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DragEventHandler, useState } from "react";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
 import { remove } from "../store/slices/task-slice";
+import { useAppDispatch } from "../store/hooks";
 export const DeleteTaskContainer = ({
   direction = 'right'
 }: {
   direction?: 'right' | 'left'
 }) => {
   const [isActive, setIsActive] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleDragOver: DragEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
     setIsActive(true);
