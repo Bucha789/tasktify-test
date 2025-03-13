@@ -1,41 +1,32 @@
-import { Button, Input, Paper } from "@mui/material"
+import { IconButton, Input, Paper, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
-import { useDispatch } from "react-redux";
-import { create } from "../store/slices/task-slice";
+import { create, TaskStatus } from "../store/slices/task-slice";
+import { motion } from "framer-motion";
+import AddIcon from '@mui/icons-material/Add';
+import { taskSuggestions } from "../db/suggetions";
+import { useAppDispatch } from "../store/hooks";
 
-
-export const taskSuggestions = [
-  "🏃 Go for a morning run...",
-  "📚 Read a chapter of my favorite book...",
-  "🧹 Clean and organize my desk...",
-  "🥗 Prepare a healthy lunch...",
-  "💻 Complete the coding assignment...",
-  "🌱 Water the houseplants...",
-  "📝 Write in my journal...",
-  "🧘‍♀️ Do 15 minutes of meditation...",
-  "🛒 Get groceries for the week...",
-  "✉️ Respond to important emails.."
-]
 export type Task = {
   task: string;
-  completed: boolean;
+  status: TaskStatus;
 }
 
 const initialFormState: Task = {
   task: "",
-  completed: false
+  status: TaskStatus.TODO
 }
 
 export const TaskCreator = () => {
-  const [placeholder, setPlaceholder] = useState<string>(taskSuggestions[0]);
+  const [suggestion, setSuggestion] = useState<string>(taskSuggestions[0]);
   const interval = useRef<NodeJS.Timeout | null>(null);
   const [formState, setFormState] = useState<Task>(initialFormState);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!formState.task) return;
     dispatch(create({
       description: formState.task,
-      completed: false
+      status: TaskStatus.TODO,
     }));
     setFormState(initialFormState);
   }
@@ -46,38 +37,102 @@ export const TaskCreator = () => {
     });
   }
   useEffect(() => {
+    if (formState.task) return;
     interval.current = setInterval(() => {
-      setPlaceholder(taskSuggestions[Math.floor(Math.random() * taskSuggestions.length)]);
-    }, 3000);
+      setSuggestion(taskSuggestions[Math.floor(Math.random() * taskSuggestions.length)]);
+    }, 2000);
     return () => {
       if (interval.current) {
         clearInterval(interval.current);
       }
     }
-  }, [])
+  }, [formState.task])
   return (
-    <Paper elevation={2} sx={{
-      padding: 2,
-      borderRadius: 2,
-      backgroundColor: 'background.paper',
+    <Paper
+      elevation={2}
+      data-testid="task-creator"
+      sx={{
+        padding: 2,
+        borderRadius: 2,
+        backgroundColor: 'background.paper',
+        '&:before': {
+        content: '""',
+        position: 'absolute',
+        top: -1,
+        left: -1,
+        right: -1,
+        bottom: -1,
+        borderRadius: 'inherit',
+        padding: 0.5,
+        background: 'linear-gradient(130deg, #55DDFF 0%, #C058F3 100%)',
+        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+        WebkitMaskComposite: 'xor',
+        maskComposite: 'exclude',
+        opacity: 0,
+        transition: 'opacity 0.2s ease-in-out',
+      },
+      '&:focus-within:before': {
+        opacity: 1,
+      },
+      position: 'relative'
     }}>
       <form onSubmit={handleSubmit} style={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        position: 'relative',
       }}>
+        <div style={{
+          position: 'absolute',
+          width: '100%',
+          opacity: formState.task ? 0 : 1,
+        }}>
+          <Typography
+            component={motion.span}
+            key={suggestion}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ type: 'spring', bounce: 0 }}
+            sx={{
+              width: '100%',
+              opacity: formState.task ? 0 : 1,
+              color: 'text.secondary',
+              fontSize: {
+                xs: '1rem',
+                md: '1.25rem',
+              },
+            }}
+          >
+            {suggestion}
+          </Typography>
+        </div>
         <Input
           name="task"
           type="text"
-          placeholder={placeholder}
-          value={formState.task}
-          onChange={handleChange}
+          size="medium"
+          placeholder={'Type your task here...'}
+          inputProps={{
+            sx: {
+              '&::placeholder': {
+                opacity: 0,
+              },
+              fontSize: {
+                xs: '1rem',
+                md: '1.25rem',
+              },
+            },
+          }}
           sx={{
             width: '85%',
           }}
+          value={formState.task}
+          onChange={handleChange}
         />
-        <Button type="submit" variant="contained" color="primary">Add</Button>
+        <IconButton type="submit" color="secondary" aria-label="add task">
+          <AddIcon fontSize="large" />
+        </IconButton>
       </form>
     </Paper>
   )

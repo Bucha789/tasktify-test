@@ -1,27 +1,85 @@
 import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import JosefinSansRegular from './assets/fonts/Josefin-Sans/JosefinSans-Regular.ttf';
+import JosefinSansMedium from './assets/fonts/Josefin-Sans/JosefinSans-Medium.ttf';
+import JosefinSansSemiBold from './assets/fonts/Josefin-Sans/JosefinSans-SemiBold.ttf';
+import JosefinSansBold from './assets/fonts/Josefin-Sans/JosefinSans-Bold.ttf';
 
 const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class'
   },
-  colorSchemes: {
-    dark: true,
-    light: true,
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 400;
+          font-style: normal;
+          src: url(${JosefinSansRegular}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 500;
+          font-style: normal;
+          src: url(${JosefinSansMedium}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 600;
+          font-style: normal;
+          src: url(${JosefinSansSemiBold}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 700;
+          font-style: normal;
+          src: url(${JosefinSansBold}) format('truetype');
+        }
+      `
+    }
   },
-  palette: {
-    primary: {
-      main: '#556cd6',
+  colorSchemes: {
+    dark: {
+      palette: {
+        primary: {
+          main: '#3A7CFD',
+        },
+        secondary: {
+          main: '#8796A5',
+        },
+        background: {
+          default: '#171823',
+          paper: '#25273D',
+        },
+        text: {
+          primary: '#C8CBE7',
+          secondary: '#5B5E7E',
+          disabled: '#4D5067',
+        },
+      },
     },
-    secondary: {
-      main: '#19857b',
-    },
-    error: {
-      main: red.A400,
+    light: {
+      palette: {
+        background: {
+          default: '#FAFAFA',
+          paper: '#ffffff',
+        },
+        text: {
+          primary: '#494C6B',
+          secondary: '#9495A5',
+          disabled: '#D1D2DA',
+        },
+        primary: {
+          main: '#3A7CFD',
+        },
+        secondary: {
+          main: '#aab4be',
+        },
+      },
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Josefin Sans", "Arial", sans-serif',
     h1: {
       fontSize: '2.5rem',
       fontWeight: 600,
@@ -29,14 +87,20 @@ const theme = createTheme({
       letterSpacing: '-0.01562em',
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: '1.25rem',
       fontWeight: 500,
       lineHeight: 1.3,
       letterSpacing: '-0.00833em',
     },
     h3: {
-      fontSize: '1.75rem',
+      fontSize: '1rem',
       fontWeight: 500,
+      lineHeight: 1.4,
+      letterSpacing: '0em',
+    },
+    h4: {
+      fontSize: '1rem',
+      fontWeight: 600,
       lineHeight: 1.4,
       letterSpacing: '0em',
     },
