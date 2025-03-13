@@ -193,6 +193,7 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
                   cursor: 'pointer' 
                 }}
                 aria-label={description}
+                title={description}
               >
                 {description}
               </Typography>
