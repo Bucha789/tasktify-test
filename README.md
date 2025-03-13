@@ -60,6 +60,9 @@ These are the modes available:
 ### [Vite](https://vitejs.dev/)
   This library was used to create the Vite project.
 
+### [Vitest](https://vitest.dev/)
+  This library was used to create the tests for the application.
+
 
 ## Prerequisites
 - Node.js
@@ -84,6 +87,14 @@ npm install
 
 ```bash
 npm run dev
+```
+
+## Testing
+
+The app has unit tests for the task slice.
+
+```bash
+npm run test
 ```
 
 ## Future Improvements
