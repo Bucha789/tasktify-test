@@ -2,20 +2,24 @@ import { Box, Container, Paper, Typography } from "@mui/material"
 import { TaskList } from "./task-list"
 import { changeTaskStatus, Task } from "../store/slices/task-slice";
 import { TaskStatus } from "../store/slices/task-slice";
-import { useState } from "react";
+import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 import { getElements, getNearestElement } from "../utils/dom";
 import { AddTask } from "./add-task";
 const BoardSection = ({
   sectionName,
   tasks,
+  isMoving,
+  setIsMoving
 }: {
   sectionName: string
   tasks: Task[]
+  isMoving: boolean
+  setIsMoving: Dispatch<SetStateAction<boolean>>
 }) => {
   const [active, setActive] = useState(false);
   const dispatch = useDispatch();
-
+  const containerRef = useRef<HTMLDivElement>(null);
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setActive(false);
@@ -31,10 +35,33 @@ const BoardSection = ({
   }
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
+    event.preventDefault();     
+    console.log(event.clientX);
     setActive(true);
     handleHighlightIndicator(event);
+    const container = containerRef.current;
+    if (container) {
+      const containerRect = container.getBoundingClientRect();
+      console.log(containerRect.left, containerRect.right);
+      const scrollThreshold = 50; // Píxeles desde el borde donde comenzará el scroll
+      if (event.clientX < containerRect.left + scrollThreshold && !isMoving) {
+        setIsMoving(() => true);
+        container.parentElement?.scrollBy({
+          left: -1,
+          behavior: 'smooth'
+        });
+      }
+      if (event.clientX > containerRect.right - scrollThreshold && !isMoving) {
+        setIsMoving(() => true);
+        container.parentElement?.scrollBy({
+          left: 1,
+          behavior: 'smooth'
+        });
+      }
+    }   
   }
+
+
 
   const handleDragLeave = () => {
     setActive(false);
@@ -55,16 +82,32 @@ const BoardSection = ({
     el.element.style.height = "24px";
   }
 
+
+  useEffect(() => {
+    if (isMoving) {
+      setTimeout(() => {
+        setIsMoving(() => false);
+      }, 2000);
+    }
+  }, [isMoving, setIsMoving]);
+
   return (
     <Paper
       sx={{
         padding: 2,
-        width: '33%',
+        width: { xs: '350px', md: '33%' },
         borderRadius: 2,
         backgroundColor: 'background.paper',
         border: '2px solid',
         borderColor: active ? 'primary.main' : 'transparent',
+        scrollSnapAlign: 'start',
+        position: 'relative',
+        flexShrink: {
+          xs: 0,
+          md: 1,
+        },
       }}
+      ref={containerRef}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -81,6 +124,7 @@ export type TaskBoardProps = {
 }
 
 export const TaskBoard = ({ tasks }: TaskBoardProps) => {
+  const [isMoving, setIsMoving] = useState(false);
   const sections = [
     {
       sectionName: 'To Do',
@@ -97,9 +141,27 @@ export const TaskBoard = ({ tasks }: TaskBoardProps) => {
   ]
   return (
     <Container maxWidth="lg" sx={{ padding: 0 }}>
-      <Box display="flex" flexDirection="row" gap={2} justifyContent="space-between">
+      <Box 
+        display="flex" 
+        id="task-board"
+        flexDirection="row" 
+        gap={2} 
+        width={{
+          xs: '350px',
+          md: '100%',
+          lg: '100%',
+        }}
+        marginX="auto"
+        sx={{
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          scrollSnapType: 'x mandatory',
+          scrollBehavior: 'smooth',
+          flexShrink: 0,
+        }}
+      >
         {sections.map((section) => (
-          <BoardSection key={section.sectionName} {...section} />
+          <BoardSection key={section.sectionName} isMoving={isMoving} setIsMoving={setIsMoving} {...section} />
         ))}
       </Box>
     </Container>
