@@ -1,5 +1,5 @@
 import { tasks } from '../../../db/tasks';
-import reducer, { TasksState, TaskInput, TaskModify, TaskStatus, changeTaskStatus, create, modify, remove } from '../../../store/slices/task-slice';
+import reducer, { TasksState, TaskInput, TaskModify, TaskStatus, create, modify, remove, changeStatus } from '../../../store/slices/task-slice';
 import { describe, it, expect } from 'vitest';
 
 describe('Task slice', async () => {
@@ -26,7 +26,7 @@ describe('Task slice', async () => {
       ],
     };
 
-    const actual = reducer(initialState, changeTaskStatus({ id: initialState.addedTasks[0].id, status: TaskStatus.COMPLETED }));
+    const actual = reducer(initialState, changeStatus({ id: initialState.addedTasks[0].id, status: TaskStatus.COMPLETED }));
     expect(actual).toEqual({
       addedTasks: [
         {
@@ -71,6 +71,7 @@ describe('Task slice', async () => {
     const modifiedTask: TaskModify = {
       description: 'modified task',
       id: '1',
+      status: TaskStatus.TODO,
     };
 
     const actual = reducer(initialState, modify(modifiedTask));
