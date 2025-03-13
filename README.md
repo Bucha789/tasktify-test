@@ -13,7 +13,20 @@ Project is deployed on Netlify and can be accessed [here](https://xira-ai-fronte
 
 ## Design
 
-The app has two main views:
+When I was designing the app, I wanted to create a simple and clean design that is easy to use and navigate. I also wanted to make the app look modern and clean. So, I checked some task management apps and I liked the design of [Kanban](https://kanban.so) and [Trello](https://trello.com). 
+
+This approach was very helpful to create the app. So, I followed the requirements rules about to use a list to display the tasks and the drag and drop functionality to move the tasks between columns used the inspiration from the designs of the apps mentioned above and I created the app.
+
+Also, I wanted to keep a seamless user experience, so I added some animations to the app, like the drag and drop animations and the task item animations.
+
+About the dark mode and light mode, I changed the colors of the MUI theme because, in my opinion, the default colors are not very good for the dark mode. I looked for a color palette in the internet and I found a very good one in this figma design from frontend mentor [here](https://www.frontendmentor.io/challenges/todo-app-Su1_KokOW). I used the font from there as well.
+
+Animations are not perfect, but I tried to make them as smooth as possible. It was the first time that I used frame motion so I checked the documentation and I watched some tutorials to understand how to use it. You can find some of them [here](https://youtu.be/O5lZqqy7VQE?si=pzeuqTFhf7RaLbss) and [here](https://youtu.be/UEzt1vp2p6k?si=eklL2DDtqVWNcIGr). Some of the functionalities like the add task button was found there.
+
+I'm not a designer, so I did my best to create a simple and clean design that is easy to use and navigate. I'm open to feedback and suggestions to improve the app. 
+
+
+For the app, I created two main views:
 - **Task board**: The app has a task board with three columns: To Do, In Progress and Done.
 ![Task Board View](docs/images/views/board.png)
 - **Task list**: The app has a task list view that displays all the tasks in a list.
