@@ -173,7 +173,7 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
       >
         {
           isEditing ? <EditTaskForm initialState={{ description }} onSubmit={handleSaveTask} /> : <>
-            <Box display="flex" alignItems="center" gap={1}>
+            <Box display="flex" alignItems="center" gap={1} overflow="hidden">
               <CustomCheckbox
                 checked={status === TaskStatus.COMPLETED}
                 onChange={handleCompleteTask}
@@ -186,7 +186,7 @@ export const TaskItem = ({ description, status, id, allowedStatuses }: TaskItemP
               />
               <Typography 
                 onClick={() => setIsEditing(true)} 
-                variant="body1" 
+                variant="body1"
                 sx={{ 
                   textDecoration: status === TaskStatus.COMPLETED ? 'line-through' : 'none', 
                   color: status === TaskStatus.COMPLETED ? 'text.disabled' : 'text.primary', 

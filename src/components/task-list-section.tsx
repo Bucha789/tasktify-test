@@ -18,13 +18,13 @@ export const TaskListSection = ({
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     handleClearHighlights();
-    const elements = getElements(`[data-column="${tasks[0].status}"]`);
+    const elements = getElements(`[data-column="${status}"]`);
     const { element } = getNearestElement(event, elements);
     const task = JSON.parse(event.dataTransfer.getData('task'));
     dispatch(changeStatus({
       id: task.id,
       status: status as TaskStatus,
-      beforeId: element.dataset.before
+      beforeId: element?.dataset?.before
     }));
   }
 
@@ -37,18 +37,20 @@ export const TaskListSection = ({
     handleClearHighlights();
   }
   const handleClearHighlights = (elements?: HTMLElement[]) => {
-    const indicators = elements || getElements(`[data-column="${tasks[0].status}"]`);
+    const indicators = elements || getElements(`[data-column="${status}"]`);
     indicators.forEach((element) => {
       element.style.opacity = "0";
       element.style.height = "16px";
     });
   }
   const handleHighlightIndicator = (e: React.DragEvent<HTMLDivElement>) => {
-    const elements = getElements(`[data-column="${tasks[0].status}"]`);
+    const elements = getElements(`[data-column="${status}"]`);
     handleClearHighlights(elements);
     const el = getNearestElement(e, elements);
-    el.element.style.opacity = "1";
-    el.element.style.height = "24px";
+    if (el.element) {
+      el.element.style.opacity = "1";
+      el.element.style.height = "24px";
+    }
   }
   return (
     <Box

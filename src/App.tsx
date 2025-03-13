@@ -8,7 +8,7 @@ import { HomePage } from './pages/home'
 function App() {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme} defaultMode='light'>
         <CssBaseline />
         <HomePage />
       </ThemeProvider>
