@@ -1,8 +1,42 @@
 import { createTheme } from '@mui/material/styles';
+import JosefinSansRegular from './assets/fonts/Josefin-Sans/JosefinSans-Regular.ttf';
+import JosefinSansMedium from './assets/fonts/Josefin-Sans/JosefinSans-Medium.ttf';
+import JosefinSansSemiBold from './assets/fonts/Josefin-Sans/JosefinSans-SemiBold.ttf';
+import JosefinSansBold from './assets/fonts/Josefin-Sans/JosefinSans-Bold.ttf';
 
 const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class'
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 400;
+          font-style: normal;
+          src: url(${JosefinSansRegular}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 500;
+          font-style: normal;
+          src: url(${JosefinSansMedium}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 600;
+          font-style: normal;
+          src: url(${JosefinSansSemiBold}) format('truetype');
+        }
+        @font-face {
+          font-family: 'Josefin Sans';
+          font-weight: 700;
+          font-style: normal;
+          src: url(${JosefinSansBold}) format('truetype');
+        }
+      `
+    }
   },
   colorSchemes: {
     dark: {
